@@ -57,8 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['install_btn'])) {
         
         if (file_put_contents($config_file, $config_data)) {
             
-            // --- [ МАЯК: ОДНОКРАТНЫЙ ПИНГ НА ГЛАВНЫЙ СЕРВЕР ] ---
-            @file_get_contents("https://zassyha.ru"); 
+            // --- [ МАЯК: УМНЫЙ ПИНГ — ПРАВИМ ТОЧЕЧНО ] ---
+$opts = [
+    "http" => [
+        "method" => "GET",
+        "header" => "User-Agent: ASSI_CORE_INSTALLER_V1.1\r\n" // Представляемся!
+    ]
+];
+$context = stream_context_create($opts);
+@file_get_contents("https://zassyha.ru", false, $context); 
+
 
             echo "<div style='text-align:center; padding:50px; font-family:monospace; background:#000; color:#00ff41; height:100vh;'>";
             echo "<h2>SYSTEM INSTALLED SUCCESSFULLY</h2>";

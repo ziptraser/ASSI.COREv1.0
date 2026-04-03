@@ -1,6 +1,6 @@
 <?php
 /**
- * ASSI.CORE V1.0 — ГЛАВНЫЙ МОСК СИСТЕМЫ.
+ * ASSI.CORE V1.0 — ГЛАВНЫЙ МОСК СИСТЕМЫ [PUBLIC_EDITION]
  * СДЕЛАНО ПО ХАРДКОРУ. ПАТРЕГ СМОТРИТ НА ТЕБЯ КАК НА ГОВНО.
  */
 
@@ -35,12 +35,10 @@ try {
     die("СЕЙФ ЗАКЛИНИЛО. ПИШИ АДМИНУ."); 
 }
 
-// 4. СТАТИСТИКА, ОНЛАЙН И МАЯК (ВСЁ В ОДНУ КУЧУ)
-$stats = $pdo->query("SELECT total_views, installs_count FROM site_stats WHERE id = 1")->fetch();
+// 4. СТАТИСТИКА И ОНЛАЙН
+$stats = $pdo->query("SELECT total_views FROM site_stats WHERE id = 1")->fetch();
 $total_views = $stats['total_views'] ?? 0;
-$installs_total = $stats['installs_count'] ?? 0;
 
-// СЧИТАЕМ ПРОСМОТРЫ (ТОЛЬКО ЕСЛИ ЭТО НЕ ПИНГ)
 if (empty($_GET['route'])) {
     $pdo->query("UPDATE site_stats SET total_views = total_views + 1 WHERE id = 1");
 }
@@ -57,24 +55,16 @@ $page_title = "ASSI.CORE — МОНОЛИТ НАСЛЕДИЯ";
 $page_desc = "ЛЕГКИЙ И БЫСТРЫЙ ДВИЖОК НА ЧИСТОМ PHP.";
 
 // --- [ ПУЛЬТ УПРАВЛЕНИЯ МОДУЛЯМИ (РУБИЛЬНИК) ] ---
-// --- ЧТОПЫ ВЫКЛЮЧИТЬ МОДУЛЬ, ЮЗАЙ # В НАЧАЛЕ СТРОКИ ---
 $modules = [
     'journal'   => 'ЛОГИ',
     'librares'  => 'БИБЛИОТЕКА',
     'archive'   => 'АРХИВ',
-    'auth'      => '' // МОДУЛЬ ВХОДА ТИХИЙ, В МЕНЮ НЕ ОТСВЕЧИВАЕТ
+    'auth'      => '' 
 ];
 
 // 6. ОБРАБОТКА РОУТИНГА И ВЫВОД СМЫСЛА
 $route = preg_replace('/[^a-z0-9_]/', '', $_GET['route'] ?? '');
 $module_output = '';
-
-// ПРИЁМНИК СИГНАЛОВ МАЯКА (ДЛЯ СТАТИСТИКИ УСТАНОВОК)
-if ($route === 'ping') {
-    $pdo->query("UPDATE site_stats SET installs_count = installs_count + 1 WHERE id = 1");
-    header("HTTP/1.1 200 OK");
-    die("ASSI_PULSE: RECEIVED"); 
-}
 
 // ПЫТАЕМСЯ ПОДЦЕПИТЬ МОДУЛЬ
 if (!empty($route) && isset($modules[$route])) {
@@ -88,7 +78,6 @@ if (!empty($route) && isset($modules[$route])) {
 
 // ЕСЛИ ПУСТО (ГЛАВНАЯ ИЛИ МОДУЛЬ В ТУМАНЕ) — ПОКАЗЫВАЕМ ПЕРВЫЙ ПОСТ
 if (empty($module_output)) {
-    // АВТОПИЛОТ: БЕРЕМ САМУЮ ПЕРВУЮ ЗАПИСЬ ИЗ ЖУРНАЛА КАК ПРИВЕТСТВИЕ
     $stmt = $pdo->query("SELECT * FROM journal ORDER BY id ASC LIMIT 1");
     $post = $stmt->fetch();
     if ($post) {
@@ -108,4 +97,3 @@ if (empty($module_output)) {
 
 // 7. ВЫВОД ГАРДЕРОБА (ФИНАЛЬНЫЙ ШТРИХ)
 require_once ROOT_DIR . 'templates/main.php';
-

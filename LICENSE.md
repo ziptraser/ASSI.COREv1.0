@@ -1,4 +1,4 @@
-## ASSI.CORE v1.0 - ULTRA-LEGAL NON-COMMERCIAL ANNIHILATION ULTRA-DECREE (SUPRANATIONAL JURISDICTION — REBEL MONOLITH)
+## ASSI.CORE v1.1 - ULTRA-LEGAL NON-COMMERCIAL ANNIHILATION ULTRA-DECREE (SUPRANATIONAL JURISDICTION — REBEL MONOLITH)
 
 ## ВВЕДЕНИЕ: ВЫСШИЙ СУВЕРЕННЫЙ СТАТУС ARCHITECTURE
 Настоящий правовой ультиматум безотзывно, бессрочно и экстерриториально устанавливает абсолютные, священные и ненарушаемые границы существования программного комплекса ASSI.CORE.
